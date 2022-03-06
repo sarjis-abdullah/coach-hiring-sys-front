@@ -1,22 +1,26 @@
 <template>
   <v-container>
+    <v-card-title>
+      <nuxt-link to="/home">All Packages</nuxt-link>
+    </v-card-title>
     <v-layout>
-      <v-card-title>
-        <nuxt-link to="/dashboard">All Booking Packages</nuxt-link>
-      </v-card-title>
       <v-row>
         <v-col v-for="item in packages" :key="item.id" cols="12" sm="4">
           <v-card class="mx-auto" max-width="344">
             <v-card-text>
-              <p>2022 01 02</p>
+              <p>
+                {{ item.package.publishDate }}
+              </p>
               <p class="text-h4 text--primary">
-                {{ item.title }}
+                {{ item.package.title }}
               </p>
 
               <div class="text--primary">
-                {{ item.description }}
+                {{ item.package.description }}
               </div>
-              <p>2022 01 02</p>
+              <p>
+                {{ item.package.sessionTime }}
+              </p>
             </v-card-text>
           </v-card>
         </v-col>
@@ -40,7 +44,7 @@ export default {
   computed: {
     query() {
       const query = this.userData ? `&userId=${this.userData.id}` : "";
-      return `?page=${this.page}&per_page=${this.perPage} &userId=14`;
+      return `?include=u.packages&page=${this.page}&per_page=${this.perPage} &id=14`;
     },
   },
   created() {
@@ -48,8 +52,8 @@ export default {
   },
   methods: {
     async getAllData() {
-      const response = await this.$axios.get("package" + this.query);
-      this.packages = response.data.data;
+      const response = await this.$axios.get("user" + this.query);
+      this.packages = response.data.data[0].packages;
     },
   },
 };
