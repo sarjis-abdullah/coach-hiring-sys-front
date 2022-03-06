@@ -35,6 +35,9 @@
 </template>
 
 <script>
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 export default {
   name: "Login",
   data() {
@@ -63,17 +66,35 @@ export default {
     },
   },
   methods: {
+    handleRole({ roles }) {
+      const editedRoles = [];
+      roles.forEach((item) => {
+        editedRoles.push(item.name);
+      });
+      console.log(editedRoles);
+    },
     async handleSubmit() {
-      console.log(this.$refs.loginForm.validate(), this.$refs.loginForm);
       if (this.$refs.loginForm.validate()) {
         try {
           this.loading = true;
           const response = await this.$axios.post("login", this.loginData);
-          console.log(response.data)
+          cookies.set("accessToken", response.data.accessToken, { path: "/" });
+          const userData = response.data.user;
+          userData.roles = response.data.roles;
+          cookies.set("userData", JSON.stringify(userData), { path: "/" });
+          const editedRoles = [];
+          userData.roles.forEach((item) => {
+            editedRoles.push(item.name);
+          });
+          if (editedRoles.includes("admin")) {
+            this.$router.push("/sport-type/list")
+          } else {
+            this.$router.push("/package/list")
+          }
         } catch (error) {
-            console.error(error);
-        }finally {
-            this.loading = false;
+          console.error(error);
+        } finally {
+          this.loading = false;
         }
       }
     },
