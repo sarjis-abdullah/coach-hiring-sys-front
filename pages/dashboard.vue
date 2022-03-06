@@ -32,6 +32,7 @@
 <script>
 import AthleteSinglePackage from "@/components/athlete/AthleteSinglePackage.vue";
 export default {
+  middleware: 'auth',
   components: {
     AthleteSinglePackage,
   },

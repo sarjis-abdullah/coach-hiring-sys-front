@@ -6,6 +6,7 @@
 <script>
 import PackageForm from '@/components/package/PackageForm'
 export default {
+  middleware: 'auth',
   components: {
     PackageForm,
   },

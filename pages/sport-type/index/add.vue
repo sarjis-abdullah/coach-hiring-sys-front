@@ -6,6 +6,7 @@
 <script>
 import SportTypeForm from '@/components/sport-type/SportTypeForm'
 export default {
+  middleware: 'auth',
   components: {
     SportTypeForm,
   },

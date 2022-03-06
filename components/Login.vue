@@ -81,23 +81,24 @@ export default {
           cookies.set("accessToken", response.data.accessToken, { path: "/" });
           const userData = response.data.user;
           userData.roles = response.data.roles;
-          userData.accessToken = response.data.accessToken
+          userData.accessToken = response.data.accessToken;
           this.userData = userData;
           cookies.set("userData", JSON.stringify(userData), { path: "/" });
           const editedRoles = [];
           userData.roles.forEach((item) => {
             editedRoles.push(item.name);
           });
-          if (editedRoles.includes("admin")) {
-            console.log(12345)
-            this.$router.push("/sport-type/list")
-          } else if(editedRoles.includes("coach")) {
-            this.$router.push("/package/list")
-          }else {
-            this.$router.push("/home")
-          }
+          this.$store.dispatch("nuxtServerInit", userData);
+          this.$nextTick(() => {
+            if (editedRoles.includes("admin")) {
+              this.$router.replace("/sport-type/list")
+            } else if (editedRoles.includes("coach")) {
+              this.$router.replace("/package/list");
+            } else {
+              this.$router.replace("/home");
+            }
+          });
         } catch (error) {
-          console.error(error);
         } finally {
           this.loading = false;
         }

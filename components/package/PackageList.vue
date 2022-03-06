@@ -1,6 +1,24 @@
 <template>
   <section>
     <v-container grid-list-md class="px-0">
+      <v-row>
+        <v-col cols="12" sm="6">
+          <v-text-field
+            v-model="priceSearch"
+            counter="25"
+            hint="Search by Price"
+            label="Regular"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="6">
+          <v-text-field
+            v-model="priceSearch"
+            counter="25"
+            hint="Search by Price"
+            label="Regular"
+          ></v-text-field>
+        </v-col>
+      </v-row>
       <v-layout row wrap justify-center>
         <v-flex class="package">
           <v-card class="pa-3">
@@ -78,7 +96,6 @@ export default {
   },
   mixins: [ActionMixins],
   components: {
-    
     FloatingButton,
     PackageForm,
     ConfirmModal,
@@ -93,6 +110,7 @@ export default {
       dataTableLoading: false,
       // For common action
       moduleStore: "package",
+      priceSearch: "",
     };
   },
   watch: {
@@ -111,10 +129,14 @@ export default {
       allData: "package/allData",
     }),
     paginationQuery() {
-      return `?page=${this.options.page}&per_page=${this.options.itemsPerPage}&order_by=updated_at&order_direction=desc`;
+      return `?page=${this.options.page}&per_page=${this.options.itemsPerPage}`;
     },
     query() {
-      return this.paginationQuery;
+      const query =
+        this.priceSearch != ""
+          ? "?price=" + this.priceSearch
+          : this.paginationQuery;
+      return query + "&order_by=updated_at&order_direction=desc";
     },
     headers() {
       let items = [
@@ -154,10 +176,10 @@ export default {
         .dispatch("package/getData", this.query)
         .then((response) => {
           this.totalItems = this.allData.length;
-          return Promise.resolve(response)
+          return Promise.resolve(response);
         })
-        .catch(err=> {
-          return Promise.reject(err)
+        .catch((err) => {
+          return Promise.reject(err);
         })
         .finally(() => {
           this.dataTableLoading = false;

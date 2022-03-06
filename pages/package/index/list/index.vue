@@ -7,6 +7,7 @@
 <script>
 import PackageList from '@/components/package/PackageList'
 export default {
+  middleware: 'auth',
   components: {
     PackageList,
   },

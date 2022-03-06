@@ -5,6 +5,7 @@
 <script>
 import AthletePackages from '@/components/athlete/AthletePackages.vue';
   export default {
+    middleware: 'auth',
     components: {
       AthletePackages,
     },
