@@ -14,7 +14,7 @@ export default function ({ app, store, $axios }) {
     (response) => response,
     (error) => {
       if (error.response && error.response.status === 401) {
-        cookies.remove("accessToken");
+        // cookies.remove("accessToken");
         return;
       }
       return Promise.reject(error);

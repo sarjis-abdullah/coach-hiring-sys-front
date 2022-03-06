@@ -81,6 +81,8 @@ export default {
           cookies.set("accessToken", response.data.accessToken, { path: "/" });
           const userData = response.data.user;
           userData.roles = response.data.roles;
+          userData.accessToken = response.data.accessToken
+          this.userData = userData;
           cookies.set("userData", JSON.stringify(userData), { path: "/" });
           const editedRoles = [];
           userData.roles.forEach((item) => {
