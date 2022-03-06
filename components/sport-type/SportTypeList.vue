@@ -85,7 +85,6 @@ export default {
   },
   data() {
     return {
-      userId: null,
       options: {
         page: 1,
         itemsPerPage: 10,
@@ -94,12 +93,6 @@ export default {
       dataTableLoading: false,
       // For common action
       moduleStore: "sport-type",
-      // For date range filter
-      dateQuery: "",
-      // For status filter
-      filterStatus: null,
-      //For user filter
-      filterUserId: null,
     };
   },
   watch: {
@@ -153,16 +146,8 @@ export default {
           this.dataTableLoading = false;
         });
     },
-    // For date range filter component
-    setDateFilterData(query) {
-      this.dateQuery = query;
-    },
     showRowData(item) {
       !this.reportPage && this.$router.push("/sport-type/list/" + item.id);
-    },
-    //For filter by user
-    setAutoCompleteData(id) {
-      this.filterUserId = id;
     },
   },
 };

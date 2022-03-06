@@ -5,18 +5,17 @@
         <v-icon large color="error">mdi-close</v-icon>
         <h2 class="text-center">Are you Sure ?</h2>
         <div class="mt-5">
-          <custom-button
+          <v-btn
             color="primary"
             class="mx-1"
             @click.stop="$emit('close')"
-            >Cancel</custom-button
-          ><custom-button
+            >Cancel</v-btn>
+            <v-btn
             :loading="loading"
             class="mx-1"
             color="error"
             @click="sureDelete"
-            >Delete</custom-button
-          >
+            >Delete</v-btn>
         </div>
       </div>
     </v-card>

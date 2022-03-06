@@ -1,5 +1,8 @@
 <template>
   <div>
+    <v-card-title>
+      Sport Types
+    </v-card-title>
     <v-tabs v-model="tab" background-color="#1BBD36" dark>
       <v-tabs-slider color="yellow"></v-tabs-slider>
       <v-tab v-for="item in tabItems" :key="item.name" :to="item.to">
