@@ -52,9 +52,9 @@
       <v-spacer />
       <v-btn
         icon
-        @click.stop="rightDrawer = !rightDrawer"
+        @click="logout"
       >
-        <v-icon>mdi-menu</v-icon>
+        <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>
@@ -89,6 +89,9 @@
 </template>
 
 <script>
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 export default {
   data () {
     return {
@@ -110,8 +113,15 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'Coach Hiring System'
     }
-  }
+  },
+  methods: {
+    logout() {
+      cookies.remove("accessToken")
+      cookies.remove("userData")
+      this.$router.push("/")
+    }
+  },
 }
 </script>

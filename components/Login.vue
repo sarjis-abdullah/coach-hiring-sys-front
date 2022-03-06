@@ -89,9 +89,12 @@ export default {
             editedRoles.push(item.name);
           });
           if (editedRoles.includes("admin")) {
+            console.log(12345)
             this.$router.push("/sport-type/list")
-          } else {
+          } else if(editedRoles.includes("coach")) {
             this.$router.push("/package/list")
+          }else {
+            this.$router.push("/home")
           }
         } catch (error) {
           console.error(error);
