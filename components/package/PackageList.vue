@@ -119,8 +119,23 @@ export default {
     headers() {
       let items = [
         {
-          text: "Name",
-          value: "name",
+          text: "Title",
+          value: "title",
+          sortable: false,
+        },
+        {
+          text: "Description",
+          value: "description",
+          sortable: false,
+        },
+        {
+          text: "Publish Date",
+          value: "publishDate",
+          sortable: false,
+        },
+        {
+          text: "Session Time",
+          value: "sessionTime",
           sortable: false,
         },
         {

@@ -2,20 +2,62 @@
   <v-card flat>
     <v-form ref="form" @submit.prevent="edit ? updateData() : submitData()">
       <v-container>
-        <v-row class="sport-type">
-          <v-col cols="12" sm="12">
+        <v-row class="package">
+          <v-col cols="12" sm="6">
             <v-text-field
-              v-model="name"
-              label="Sport Type Name"
+              v-model="title"
+              label="Title"
               type="text"
               filled
-              :rules="nameRules"
+              :rules="rules"
+            >
+            </v-text-field>
+          </v-col>
+
+          <v-col cols="12" sm="6">
+            <v-text-field
+              v-model="price"
+              label="Price"
+              type="number"
+              min="0"
+              filled
+              :rules="rules"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-text-field
+              v-model="publishDate"
+              label="Publish Date"
+              type="text"
+              filled
+              :rules="rules"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" sm="6">
+            <v-text-field
+              v-model="sessionTime"
+              label="Session Time"
+              type="text"
+              filled
+              :rules="rules"
             >
             </v-text-field>
           </v-col>
           <v-col cols="12" sm="12">
-            <v-btn :loading="loading" type="submit"> 
-            {{edit ? "Update" : "Save"}}
+            <v-text-field
+              v-model="description"
+              label="Description"
+              type="text"
+              filled
+              :rules="rules"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" sm="12">
+            <v-btn :loading="loading" type="submit">
+              {{ edit ? "Update" : "Save" }}
             </v-btn>
             <v-btn @click="close"> Cancel </v-btn>
           </v-col>
@@ -41,15 +83,23 @@ export default {
   },
   data() {
     return {
-      name: null,
+      title: null,
+      description: null,
+      price: null,
+      publishDate: null,
+      sessionTime: null,
       loading: false,
-      nameRules: [(v) => !!v || "Email is required"],
+      rules: [(v) => !!v || "Required"],
     };
   },
   computed: {
     formData() {
       return {
-        name: this.name,
+        title: this.title,
+        description: this.description,
+        price: this.price,
+        publishDate: this.publishDate,
+        sessionTime: this.sessionTime,
       };
     },
   },
@@ -59,7 +109,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true;
         this.$store
-          .dispatch("sport-type/saveData", this.formData)
+          .dispatch("package/saveData", this.formData)
           .then((response) => {
             if (200 <= response.status < 300) {
               this.setSnackbarMsg("success", "Data saved successfully");
@@ -84,15 +134,19 @@ export default {
       this.$refs.form.reset();
       if (this.edit) this.$emit("close");
     },
-    setEditData(data) {
-      this.editId = data.id;
-      this.name = data.name;
+    setEditData({id, title, description, price, publishDate, sessionTime}) {
+      this.editId = id;
+      this.title = title
+      this.description = description
+      this.price = price
+      this.publishDate = publishDate
+      this.sessionTime = sessionTime
     },
     updateData() {
       if (this.$refs.form.validate()) {
         this.loading = true;
         this.$store
-          .dispatch("sport-type/editData", {
+          .dispatch("package/editData", {
             id: this.editId,
             data: this.formData,
           })
@@ -122,7 +176,7 @@ export default {
 </script>
 
 <style>
-.sport-type .v-text-field .v-input__control .v-input__slot {
+.package .v-text-field .v-input__control .v-input__slot {
   min-height: 68px !important;
 }
 </style>
