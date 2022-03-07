@@ -25,25 +25,39 @@
             >
             </v-text-field>
           </v-col>
-          <v-col cols="12" sm="6">
-            <v-text-field
+          <v-col cols="12" sm="12">
+            <v-menu
+            v-model="menu2"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="publishDate"
+                label="Publish Date"
+                prepend-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+                clearable
+                :rules="rules"
+              ></v-text-field>
+            </template>
+            <v-date-picker
               v-model="publishDate"
-              label="Publish Date"
-              type="text"
-              filled
-              :rules="rules"
-            >
-            </v-text-field>
+              @input="menu2 = false"
+            ></v-date-picker>
+          </v-menu>
           </v-col>
-          <v-col cols="12" sm="6">
-            <v-text-field
-              v-model="sessionTime"
-              label="Session Time"
-              type="text"
-              filled
-              :rules="rules"
-            >
-            </v-text-field>
+          <v-col cols="12" sm="12">
+            
+            <v-time-picker
+            v-model="sessionTime"
+            ampm-in-title
+          ></v-time-picker>
           </v-col>
           <v-col cols="12" sm="12">
             <v-text-field
@@ -90,6 +104,7 @@ export default {
       sessionTime: null,
       loading: false,
       rules: [(v) => !!v || "Required"],
+      menu2: false
     };
   },
   computed: {

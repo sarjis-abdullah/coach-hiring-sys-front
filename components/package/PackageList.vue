@@ -7,16 +7,34 @@
             v-model="priceSearch"
             counter="25"
             hint="Search by Price"
-            label="Regular"
+            label="Search by Price"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
-          <v-text-field
-            v-model="priceSearch"
-            counter="25"
-            hint="Search by Price"
-            label="Regular"
-          ></v-text-field>
+          <v-menu
+            v-model="menu2"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="date"
+                label="Filter by Publish Date"
+                prepend-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+                clearable
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="date"
+              @input="menu2 = false"
+            ></v-date-picker>
+          </v-menu>
         </v-col>
       </v-row>
       <v-layout row wrap justify-center>
@@ -111,6 +129,8 @@ export default {
       // For common action
       moduleStore: "package",
       priceSearch: "",
+      date: null,
+      menu2: false,
     };
   },
   watch: {
@@ -132,10 +152,14 @@ export default {
       return `?page=${this.options.page}&per_page=${this.options.itemsPerPage}`;
     },
     query() {
-      const query =
-        this.priceSearch != ""
-          ? "?price=" + this.priceSearch
-          : this.paginationQuery;
+      let query = this.paginationQuery;
+      if (this.date) {
+        query = "?publishDate=" + this.date;
+      } else if (this.priceSearch != "") {
+        query = "?price=" + this.priceSearch;
+      } else if (this.date && this.priceSearch != "") {
+        query = "?price=" + this.priceSearch + "&publishDate=" + this.date;
+      }
       return query + "&order_by=updated_at&order_direction=desc";
     },
     headers() {

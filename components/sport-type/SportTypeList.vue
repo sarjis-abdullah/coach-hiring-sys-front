@@ -1,6 +1,34 @@
 <template>
   <section>
     <v-container grid-list-md class="px-0">
+      <v-row>
+        <v-col cols="12" sm="6">
+          <v-menu
+            v-model="menu2"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="date"
+                label="Filter by Publish Date"
+                prepend-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+                clearable
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="date"
+              @input="menu2 = false"
+            ></v-date-picker>
+          </v-menu>
+        </v-col>
+      </v-row>
       <v-layout row wrap justify-center>
         <v-flex class="sport-type">
           <v-card class="pa-3">
@@ -93,6 +121,8 @@ export default {
       dataTableLoading: false,
       // For common action
       moduleStore: "sport-type",
+      date: null,
+      menu2: false
     };
   },
   watch: {
@@ -109,10 +139,14 @@ export default {
       allData: "sport-type/allData",
     }),
     paginationQuery() {
-      return `?page=${this.options.page}&per_page=${this.options.itemsPerPage}&order_by=updated_at&order_direction=desc`;
+      return `?page=${this.options.page}&per_page=${this.options.itemsPerPage}`;
     },
     query() {
-      return this.paginationQuery;
+      let query = this.paginationQuery;
+      if(this.date){
+        query = "?updated_at=" + this.date
+      }
+      return query + '&order_by=updated_at&order_direction=desc';
     },
     headers() {
       let items = [
